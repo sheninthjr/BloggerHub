@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { readFileSync } from 'fs';
+import { UserInput } from 'types'
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
@@ -13,8 +14,10 @@ const resolvers = {
         if (!input) {
           throw new Error("Input is undefined");
         }
-        const { email, firstname, lastname } = input;
-        const newUser = {
+        const parsedUser = UserInput.safeParse(input);
+        if(parsedUser.success){
+          const { email, firstname, lastname } = input;
+          const newUser = {
           id: (users.length + 1).toString(),
           email,
           firstname,
@@ -22,6 +25,7 @@ const resolvers = {
         };
         users.push(newUser);
         return newUser;
+        }
       }catch(e){
         throw new Error("Failed to create new user")
       }
