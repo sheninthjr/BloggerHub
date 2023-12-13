@@ -8,16 +8,27 @@ const users = [];
 
 const resolvers = {
   Mutation: {
-    CreateUser: ( { input }) => {
-      const newUser = {
-        id: users.length + 1,
-        ...input,
-      };
-      users.push(newUser);
-      return newUser;
+    CreateUser: (_, { input }) => {
+      try{
+        if (!input) {
+          throw new Error("Input is undefined");
+        }
+        const { email, firstname, lastname } = input;
+        const newUser = {
+          id: (users.length + 1).toString(),
+          email,
+          firstname,
+          lastname,
+        };
+        users.push(newUser);
+        return newUser;
+      }catch(e){
+        throw new Error("Failed to create new user")
+      }
     },
   },
 };
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
