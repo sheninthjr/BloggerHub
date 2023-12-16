@@ -1,10 +1,9 @@
-import CreateUserComponent from "./CreateUserComponent";
-
+import CreateUser from "../../../packages/ui/src/CreateUser";
 
 export default function Home() {
   return (
     <>
-    <CreateUserComponent/>
+      <CreateUser/>
     </>
   )
 }

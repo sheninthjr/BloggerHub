@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { gql } from "graphql-tag";
+//@ts-ignore
+import Success from "../components/SuccessButton";
 
 const CREATE_USER = gql`
   mutation CreateUser($input: CreateUserInput!) {
@@ -15,7 +17,7 @@ const CREATE_USER = gql`
   }
 `;
 
-const CreateUserComponent = () => {
+const CreateUser = () => {
   const [formData, setFormData] = useState({
     email: "",
     firstname: "",
@@ -23,6 +25,17 @@ const CreateUserComponent = () => {
   });
 
   const [createUser, { data }] = useMutation(CREATE_USER);
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 5000);
+    }
+  }, [data]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -79,22 +92,22 @@ const CreateUserComponent = () => {
             />
           </div>
           <div className="flex justify-center">
-            <button onClick={handleCreateUser} className="btn btn-primary w-fit">
+            <button
+              onClick={handleCreateUser}
+              className="btn btn-primary w-fit"
+            >
               Create User
             </button>
           </div>
         </div>
       </div>
-      {data && (
-        <div>
-          <p>ID: {data.CreateUser.id}</p>
-          <p>Email: {data.CreateUser.email}</p>
-          <p>Firstname: {data.CreateUser.firstname}</p>
-          <p>Lastname: {data.CreateUser.lastname}</p>
+      {showSuccess && (
+        <div className="toast toast-center">
+          <Success />
         </div>
       )}
     </div>
   );
 };
 
-export default CreateUserComponent;
+export default CreateUser;
