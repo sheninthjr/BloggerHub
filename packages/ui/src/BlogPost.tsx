@@ -1,6 +1,8 @@
 'use client'
 import { useQuery, gql } from '@apollo/client';
 import { blogPostType } from 'lib';
+//@ts-ignore
+import Skeleton from '../components/Skeleton';
 
 const GET_BLOG_POST = gql`
   query {
@@ -18,14 +20,19 @@ const BlogPost = () => {
   const { loading, error, data } = useQuery(GET_BLOG_POST);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div>
+        <Skeleton />
+      </div>
+    );
   }
+    
 
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-  
-  const blogPosts: blogPostType[] = data.blogPost;
+
+  const blogPosts: blogPostType[] = data.blogPost || [];
 
   return (
     <>
@@ -38,7 +45,7 @@ const BlogPost = () => {
             <p>{blogPost.description}</p>
             <div className="card-actions justify-end">
               {Array.isArray(blogPost.tags) &&
-                blogPost.tags.map((tag:any, tagIndex:number) => (
+                blogPost.tags?.map((tag:any, tagIndex:number) => (
                   <div key={tagIndex} className="badge badge-info">
                     {tag}
                   </div>
