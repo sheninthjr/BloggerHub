@@ -7,6 +7,15 @@ type User {
 
 type Query {
     user: [User]
+    blogPost: [BlogPost]
+}
+
+type BlogPost {
+    id: ID
+    title: String!
+    date: String!
+    description: String!
+    tags: [String!]!
 }
 
 input CreateUserInput {
@@ -15,6 +24,13 @@ input CreateUserInput {
     lastname: String!
 }
 
+input CreateBlogPost {
+    title: String!
+    description: String!
+    tags: [String!]!
+}
+
 type Mutation {
-    CreateUser(input:CreateUserInput!): User!
+    CreateUser(input: CreateUserInput!): User!
+    CreateBlogPost(input: CreateBlogPost!): BlogPost!
 }

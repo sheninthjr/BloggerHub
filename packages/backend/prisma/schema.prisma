@@ -16,3 +16,11 @@ model User {
   firstname String
   lastname  String
 }
+
+model BlogPost {
+  id          String   @id
+  title       String
+  date        String
+  description String
+  tags        String[]
+}

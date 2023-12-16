@@ -1,9 +1,9 @@
-import CreateUser from "../../../packages/ui/src/CreateUser";
+import BlogPost from '../../../packages/ui/src/BlogPost'
 
 export default function Home() {
   return (
     <>
-      <CreateUser/>
+      <BlogPost/>
     </>
   )
 }
