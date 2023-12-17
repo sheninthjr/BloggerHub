@@ -12,7 +12,7 @@ const formatDate = () => {
 
 const resolvers = {
   Mutation: {
-    CreateUser: (_, { input }) => {
+    CreateUser: async(_, { input }) => {
       try {
         if (!input) {
           throw new Error("Input is undefined");
@@ -20,12 +20,13 @@ const resolvers = {
         const parsedUser = UserInput.safeParse(input);
         if (parsedUser.success) {
           const { email, firstname, lastname } = input;
-          const newUser = {
-            id: randomUUID(),
+          const newUser = await prisma.user.create({
+            data:{
+              id: randomUUID(),
             email,
             firstname,
             lastname,
-          };
+        }});
           return newUser;
         }
       } catch (e) {
@@ -33,7 +34,7 @@ const resolvers = {
       }
     },
     CreateBlogPost: async (_, { input }) => {
-      const { title, description, tags } = input;
+      const { title, description, tags, userId } = input;
       const newBlogPost = await prisma.blogPost.create({
         data: {
           id: randomUUID(),
@@ -43,6 +44,7 @@ const resolvers = {
           tags: {
             set: tags,
           },
+          userId
         },
       });
       return newBlogPost;

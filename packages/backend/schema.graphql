@@ -16,6 +16,7 @@ type BlogPost {
     date: String!
     description: String!
     tags: [String!]!
+    userId: String!
 }
 
 input CreateUserInput {
@@ -28,6 +29,7 @@ input CreateBlogPost {
     title: String!
     description: String!
     tags: [String!]!
+    userId: String!
 }
 
 type Mutation {
