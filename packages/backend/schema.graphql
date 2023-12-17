@@ -35,4 +35,6 @@ input CreateBlogPost {
 type Mutation {
     CreateUser(input: CreateUserInput!): User!
     CreateBlogPost(input: CreateBlogPost!): BlogPost!
+    sendFriendRequest(senderId: ID!, receiverId: ID!): String
+    acceptFriendRequest(senderId: ID!, receiverId: ID!): String
 }

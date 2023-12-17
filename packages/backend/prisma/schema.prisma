@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id        String     @id
-  email     String     @unique
-  firstname String
-  lastname  String
-  blogPost  BlogPost[]
-  friends   String[]
+  id               String     @id
+  email            String     @unique
+  firstname        String
+  lastname         String
+  blogPost         BlogPost[]
+  friends          String[]
+  sendFriendReq    String[]
 }
 
 model BlogPost {

@@ -10,6 +10,9 @@ const formatDate = () => {
     return formattedDate;
 };
 
+const users: Record<string, string[]> = {};
+const friendRequests: Record<string, string[]> = {};
+
 const resolvers = {
   Mutation: {
     CreateUser: async(_, { input }) => {
@@ -33,6 +36,44 @@ const resolvers = {
         throw new Error("Failed to create new user");
       }
     },
+    sendFriendRequest: async (_, { senderId, receiverId }: { senderId: string, receiverId: string }) => {
+      const sendFR = await prisma.user.update({
+        where:{id:senderId},
+        data:{
+          sendFriendReq:{push:receiverId}
+        }
+      })
+      const recFR = await prisma.user.update({
+        where:{id:receiverId},
+        data:{
+          sendFriendReq:{push:senderId}
+        }
+      })
+      if(sendFR && recFR){
+        return 'Friend request sent successfully';
+      }
+      }
+    ,
+    acceptFriendRequest: async(_, { senderId, receiverId }: { senderId: string, receiverId: string }) => {
+      const userWithPendingRequests = await prisma.user.findFirst({
+        where: { id: receiverId },
+      }); 
+      const pendingRequests = userWithPendingRequests?.sendFriendReq || [];
+      if (pendingRequests.includes(senderId)) {
+        if (!userWithPendingRequests?.friends.includes(senderId)) {
+          await prisma.user.update({
+            where: { id: receiverId },
+            data: {
+              friends: { push: senderId },
+            },
+          });
+          return 'Friend request accepted successfully';
+        } else {
+          return 'Friend request already accepted';
+        }
+      } else {
+        return 'Friend request not found';
+    }},
     CreateBlogPost: async (_, { input }) => {
       const { title, description, tags, userId } = input;
       const newBlogPost = await prisma.blogPost.create({
