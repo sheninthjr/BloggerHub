@@ -4,11 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx",
     "./CreateUser": "./src/CreateUser.tsx",
-    "./BlogPost": "./src/BlogPost.tsx"
+    "./BlogPost": "./src/BlogPost.tsx",
+    "./CreateBlogPost":"./src/CreateBlogPost.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -29,7 +27,9 @@
   "dependencies": {
     "@apollo/client": "^3.8.8",
     "@apollo/experimental-nextjs-app-support": "^0.5.2",
+    "@next-tools/dynamic": "^0.0.11",
     "graphql": "^16.8.1",
-    "lib":"*"
+    "lib": "*",
+    "next": "^14.0.4"
   }
 }

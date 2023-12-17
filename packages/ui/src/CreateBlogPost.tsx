@@ -1,30 +1,28 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useMutation } from "@apollo/client";
-import { gql } from "graphql-tag";
+import React, { useEffect, useState } from 'react'
 //@ts-ignore
-import SuccessButton from "../components/SuccessButton";
+import SuccessButton from '../components/SuccessButton';
+import { gql, useMutation } from '@apollo/client';
 
-const CREATE_USER = gql`
-  mutation CreateUser($input: CreateUserInput!) {
-    CreateUser(input: $input) {
+
+const POST = gql`
+  mutation CreateBlogPost($input: CreateBlogPost!) {
+    CreateBlogPost(input: $input) {
+      date
+      description
       id
-      email
-      firstname
-      lastname
+      tags
+      title
     }
-  }
-`;
+}`
+const CreateBlogPost = () => {
 
-const CreateUser = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    firstname: "",
-    lastname: "",
+    title: "",
+    description: "",
+    tags: "",
   });
 
-  const [createUser, { data }] = useMutation(CREATE_USER);
+  const [createUser, { data }] = useMutation(POST);
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -41,7 +39,7 @@ const CreateUser = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: name === 'tags' ? value.split(',').map((tag: string) => tag.trim()) : value,
     }));
   };
 
@@ -52,42 +50,44 @@ const CreateUser = () => {
           input: formData,
         },
       });
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
-    <div className="flex justify-center items-center bg-base-100 h-screen">
+    <>
+    <div>
+    <div className="flex justify-center items-center h-screen">
       <div className="card w-96 shadow-xl bg-red-100">
         <div className="card-body">
           <div>
             <input
               type="text"
-              placeholder="Email"
+              placeholder="Title"
               className="input input-bordered input-info w-full max-w-xs"
-              name="email"
-              value={formData.email}
+              name="title"
+              value={formData.title}
               onChange={handleChange}
             />
           </div>
           <div>
             <input
               type="text"
-              placeholder="Firstname"
+              placeholder="Description"
               className="input input-bordered input-info w-full max-w-xs"
-              name="firstname"
-              value={formData.firstname}
+              name="description"
+              value={formData.description}
               onChange={handleChange}
             />
           </div>
           <div>
             <input
               type="text"
-              placeholder="Lastname"
+              placeholder="Tags"
               className="input input-bordered input-info w-full max-w-xs"
-              name="lastname"
-              value={formData.lastname}
+              name="tags"
+              value={formData.tags}
               onChange={handleChange}
             />
           </div>
@@ -96,7 +96,7 @@ const CreateUser = () => {
               onClick={handleCreateUser}
               className="btn btn-primary w-fit"
             >
-              Create User
+              Post
             </button>
           </div>
         </div>
@@ -107,7 +107,9 @@ const CreateUser = () => {
         </div>
       )}
     </div>
-  );
-};
+    </div>
+    </>
+  )
+}
 
-export default CreateUser;
+export default CreateBlogPost

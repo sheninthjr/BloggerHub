@@ -1,8 +1,11 @@
-'use client'
-import { useQuery, gql } from '@apollo/client';
-import { blogPostType } from 'lib';
+"use client";
+import React, { useState } from "react";
+import { useQuery, gql } from "@apollo/client";
+import { blogPostType } from "lib";
 //@ts-ignore
-import Skeleton from '../components/Skeleton';
+import Skeleton from "../components/Skeleton";
+//@ts-ignore
+import CreateBlogPost from "./CreateBlogPost";
 
 const GET_BLOG_POST = gql`
   query {
@@ -18,15 +21,15 @@ const GET_BLOG_POST = gql`
 
 const BlogPost = () => {
   const { loading, error, data } = useQuery(GET_BLOG_POST);
+  const [createMode, setCreateMode] = useState(false);
+
+  const handleCreateClick = () => {
+    setCreateMode(true);
+  };
 
   if (loading) {
-    return (
-      <div>
-        <Skeleton />
-      </div>
-    );
+    return <></>;
   }
-    
 
   if (error) {
     return <p>Error: {error.message}</p>;
@@ -36,25 +39,46 @@ const BlogPost = () => {
 
   return (
     <>
-      <div className="p-10 bg-base-100">
-      {blogPosts.map((blogPost, index:number) => (
-        <div key={index} className="card w-96 bg-slate-500 shadow-xl mb-4">
-          <div className="card-body">
-            <h2 className="card-title">{blogPost.title}</h2>
-            <div className="badge badge-warning">{blogPost.date}</div>
-            <p>{blogPost.description}</p>
-            <div className="card-actions justify-end">
-              {Array.isArray(blogPost.tags) &&
-                blogPost.tags?.map((tag:any, tagIndex:number) => (
-                  <div key={tagIndex} className="badge badge-info">
-                    {tag}
-                  </div>
-                ))}
+      <div className="bg-base-100">
+        {createMode && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+            <div className="p-8 rounded shadow-lg">
+              <CreateBlogPost />
             </div>
           </div>
+        )}
+
+        <div
+          className={`p-10 flex space-x-4 ${
+            createMode ? "filter blur-lg" : ""
+          }`}
+        >
+          {blogPosts.map((blogPost, index: number) => (
+            <div key={index} className="card w-96 bg-slate-500 shadow-xl mb-4">
+              <div className="card-body">
+                <h2 className="card-title">{blogPost.title}</h2>
+                <div className="badge badge-warning">{blogPost.date}</div>
+                <p>{blogPost.description}</p>
+                <div className="card-actions justify-end">
+                  {Array.isArray(blogPost.tags) &&
+                    blogPost.tags?.map((tag: any, tagIndex: number) => (
+                      <div key={tagIndex} className="badge badge-info">
+                        {tag}
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+
+        <button
+          className="fixed bottom-4 right-4 bg-white text-black px-4 py-2 rounded shadow"
+          onClick={handleCreateClick}
+        >
+          Create
+        </button>
+      </div>
     </>
   );
 };
