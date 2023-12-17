@@ -49,7 +49,7 @@ const BlogPost = () => {
         )}
 
         <div
-          className={`p-10 flex space-x-4 ${
+          className={`p-10 flex space-x-4 flex-wrap justify-items-center justify-center${
             createMode ? "filter blur-lg" : ""
           }`}
         >
