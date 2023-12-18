@@ -6,7 +6,7 @@ type User {
 }
 
 type Query {
-    user: [User]
+    getUser(id: ID!): [User]
     blogPost: [BlogPost]
 }
 

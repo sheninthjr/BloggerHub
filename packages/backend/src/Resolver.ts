@@ -114,6 +114,18 @@ const resolvers = {
     },
   },
   Query: {
+    getUser: (_, { id }: { id: string }) => (prisma.user.findMany({
+      where:{id:id},
+      select:{
+        id:true,
+        email:true,
+        firstname:true,
+        lastname:true,
+        blogPost:true,
+        friends:true,
+        sendFriendReq:true
+      }
+    })),
     blogPost: () => prisma.blogPost.findMany(),
   },
 };
