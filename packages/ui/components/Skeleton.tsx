@@ -1,26 +1,36 @@
-import React from 'react'
+import React from "react";
 
 const Skeleton = () => {
   return (
     <>
-    <div className="card w-96 bg-slate-500 shadow-xl mb-4">
-      <div className="card-body">
-        <h2 className="card-title">
-          <div className="skeleton h-8 w-48"></div>
-        </h2>
-        <div className="badge badge-warning">
-          <div className="skeleton h-4 w-20"></div>
+      <div className="flex justify-center bg-base-100">
+        <div
+          className={`p-10 flex bg-base-100 space-x-4 flex-wrap justify-items-center justify-center`}
+        >
+          <div className="card w-96 bg-slate-500 shadow-xl mb-4">
+            <div className="card-body">
+              <h2 className="card-title skeleton w-28 h-4"></h2>
+              <div className="badge skeleton badge-warning w-28 h-4"></div>
+              <p className="skeleton w-28 h-4"></p>
+              <div className="card-actions justify-end skeleton w-16 h-4"></div>
+            </div>
+          </div>
         </div>
-        <p>
-          <div className="skeleton h-16 w-full"></div>
-        </p>
-        <div className="card-actions justify-end">
-          <div className="skeleton h-4 w-16"></div>
+        <div
+          className={`p-10 flex bg-base-100 space-x-4 flex-wrap justify-items-center justify-center`}
+        >
+          <div className="card w-96 bg-slate-500 shadow-xl mb-4">
+            <div className="card-body">
+              <h2 className="card-title skeleton w-28 h-4"></h2>
+              <div className="badge skeleton badge-warning w-28 h-4"></div>
+              <p className="skeleton w-28 h-4"></p>
+              <div className="card-actions justify-end skeleton w-16 h-4"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
     </>
-  )
-}
+  );
+};
 
-export default Skeleton
+export default Skeleton;

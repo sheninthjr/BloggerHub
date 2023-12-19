@@ -1,9 +1,9 @@
-import BlogPost from '../../../packages/ui/src/BlogPost'
+import BlogPost from "@/ui/src/BlogPost";
 
 export default function Home() {
   return (
     <>
       <BlogPost/>
     </>
-  )
+  );
 }

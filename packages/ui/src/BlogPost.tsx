@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { blogPostType } from "lib";
 //@ts-ignore
 import Skeleton from "../components/Skeleton";
 //@ts-ignore
 import CreateBlogPost from "./CreateBlogPost";
+//@ts-ignore
+import ProfileCard from "../components/ProfileCard";
 
 const GET_BLOG_POST = gql`
   query {
@@ -22,6 +24,16 @@ const GET_BLOG_POST = gql`
 const BlogPost = () => {
   const { loading, error, data } = useQuery(GET_BLOG_POST);
   const [createMode, setCreateMode] = useState(false);
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    if (loading) {
+      setIsClient(true);
+    } else {
+      setIsClient(false);
+    }
+  }, [loading]);
+  
 
   const handleCreateClick = () => {
     setCreateMode(true);
@@ -39,6 +51,7 @@ const BlogPost = () => {
 
   return (
     <>
+    {isClient ? <Skeleton/> : 
       <div className="bg-base-100">
         {createMode && (
           <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
@@ -78,7 +91,7 @@ const BlogPost = () => {
         >
           Create
         </button>
-      </div>
+      </div>}
     </>
   );
 };

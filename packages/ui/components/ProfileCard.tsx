@@ -14,7 +14,7 @@ const USER_DETAIL = gql`
 `;
 const ProfileCard = () => {
   const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda");
-  const { loading, error, data } = useQuery(USER_DETAIL, {
+  const { loading, data } = useQuery(USER_DETAIL, {
     variables: {
       getUserId: userId,
     },
@@ -22,6 +22,7 @@ const ProfileCard = () => {
   if (loading) {
     return <></>;
   }
+  
   return (
     <>
       <div className="bg-base-100">
