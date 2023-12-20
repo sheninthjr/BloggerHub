@@ -1,31 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
+import { USER_DETAIL,FriendReq,FriendAcc } from "gql";
 
-const USER_DETAIL = gql`
-  query User($getUserId: ID!) {
-    getUser(id: $getUserId) {
-      id
-      email
-      firstname
-      lastname
-      friends
-      sendFriendReq
-    }
-  }
-`;
-
-const FriendReq = gql`
-  mutation SendFriendRequest($senderId: ID!, $receiverId: ID!) {
-    sendFriendRequest(senderId: $senderId, receiverId: $receiverId)
-  }
-`;
-
-const FriendAcc = gql`
-  mutation AcceptFriendRequest($senderId: ID!, $receiverId: ID!) {
-    acceptFriendRequest(senderId: $senderId, receiverId: $receiverId)
-  }
-`;
 
 const ProfileCard = () => {
   const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda");
