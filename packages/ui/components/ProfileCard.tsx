@@ -1,10 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { USER_DETAIL,FriendReq,FriendAcc } from "gql";
-
+import { USER_DETAIL, FriendReq, FriendAcc } from "gql";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+//@ts-ignore
+import { userDetails } from "../../store/atoms/userDetails";
 
 const ProfileCard = () => {
+  const setUserDetail = useSetRecoilState(userDetails);
   const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda");
   const [userId1, setUserId1] = useState(
     "ba2317c4-7c79-4c04-a742-3d1b82b3ca49"
@@ -15,6 +18,22 @@ const ProfileCard = () => {
       getUserId: userId,
     },
   });
+
+  useEffect(() => {
+    if (
+      !loadingUser1 &&
+      userData1 &&
+      userData1.getUser &&
+      userData1.getUser.length > 0
+    ) {
+      setUserDetail({
+        id: userData1.getUser[0].id,
+        firstname: userData1.getUser[0].firstname,
+        lastname: userData1.getUser[0].lastname,
+      });
+    }
+  }, [loadingUser1, userData1, setUserDetail]);
+
   const { loading: loadingUser2, data: userData2 } = useQuery(USER_DETAIL, {
     variables: {
       getUserId: userId1,
@@ -61,7 +80,7 @@ const ProfileCard = () => {
     return <></>;
   }
   const user2 = userData2.getUser.find(
-    (user: { id: string }) => user.id === userId
+    (user: { id: string }) => user.id === userId1
   );
 
   return (

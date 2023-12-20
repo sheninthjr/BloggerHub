@@ -6,7 +6,7 @@
   "exports": {
     "./CreateUser": "./src/CreateUser.tsx",
     "./BlogPost": "./src/BlogPost.tsx",
-    "./CreateBlogPost":"./src/CreateBlogPost.tsx"
+    "./CreateBlogPost": "./src/CreateBlogPost.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -17,6 +17,7 @@
     "@repo/typescript-config": "*",
     "@turbo/gen": "^1.10.12",
     "@types/eslint": "^8.44.7",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^20.5.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
@@ -28,9 +29,9 @@
     "@apollo/client": "^3.8.8",
     "@apollo/experimental-nextjs-app-support": "^0.5.2",
     "@next-tools/dynamic": "^0.0.11",
+    "gql": "*",
     "graphql": "^16.8.1",
     "lib": "*",
-    "next": "^14.0.4",
-    "gql":"*"
+    "next": "^14.0.4"
   }
 }

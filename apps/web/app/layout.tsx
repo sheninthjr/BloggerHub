@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApolloWrapper } from "./lib/ApolloWrapper";
+import RecoidContextProvider from "./lib/recoilContextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body className={inter.className}>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <RecoidContextProvider>
+          <ApolloWrapper>{children}</ApolloWrapper>
+        </RecoidContextProvider>
       </body>
     </html>
   );
