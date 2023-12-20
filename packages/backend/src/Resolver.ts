@@ -79,6 +79,15 @@ const resolvers = {
       const userWithPendingRequests = await prisma.user.findFirst({
         where: { id: receiverId },
       });
+      const acceptUser = await prisma.user.findUnique({
+        where: { id: senderId },
+        select: { friends: true },
+      });
+
+      if (acceptUser?.friends.includes(receiverId)) {
+        return "Friend Request Already Accepted";
+      }
+
       const pendingRequests = userWithPendingRequests?.sendFriendReq || [];
       if (pendingRequests.includes(senderId)) {
         if (!userWithPendingRequests?.friends.includes(senderId)) {
@@ -86,6 +95,17 @@ const resolvers = {
             where: { id: senderId },
             data: {
               friends: { push: receiverId },
+              sendFriendReq: {
+                set: pendingRequests.filter(requestId => requestId !== senderId),
+              }
+            },
+          });
+          await prisma.user.update({
+            where: { id: receiverId },
+            data: {
+              sendFriendReq: {
+                set: pendingRequests.filter(requestId => requestId !== senderId),
+              },
             },
           });
           return "Friend request accepted successfully";
@@ -114,18 +134,19 @@ const resolvers = {
     },
   },
   Query: {
-    getUser: (_, { id }: { id: string }) => (prisma.user.findMany({
-      where:{id:id},
-      select:{
-        id:true,
-        email:true,
-        firstname:true,
-        lastname:true,
-        blogPost:true,
-        friends:true,
-        sendFriendReq:true
-      }
-    })),
+    getUser: (_, { id }: { id: string }) =>
+      prisma.user.findMany({
+        where: { id: id },
+        select: {
+          id: true,
+          email: true,
+          firstname: true,
+          lastname: true,
+          blogPost: true,
+          friends: true,
+          sendFriendReq: true,
+        },
+      }),
     blogPost: () => prisma.blogPost.findMany(),
   },
 };
