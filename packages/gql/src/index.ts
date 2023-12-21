@@ -24,3 +24,15 @@ mutation AcceptFriendRequest($senderId: ID!, $receiverId: ID!) {
   acceptFriendRequest(senderId: $senderId, receiverId: $receiverId)
 }
 `;
+
+export const GET_BLOG_POST = gql`
+query {
+  blogPost {
+    id
+    title
+    date
+    description
+    tags
+  }
+}
+`;
