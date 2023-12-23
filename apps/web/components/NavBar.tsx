@@ -65,7 +65,6 @@ const NavBar = () => {
           </button>
           <button className="btn btn-ghost btn-circle">
             <div className="indicator">
-              <NavBarProfile />
               <span className="badge badge-xs badge-primary indicator-item"></span>
             </div>
           </button>
