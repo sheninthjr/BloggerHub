@@ -20,7 +20,7 @@ const userMessage: {
   [userId: string]: {
     message: [string],
   }
-} = {}
+} = {};
 
 let counter = 0;
 wss.on("connection", async (ws) => {

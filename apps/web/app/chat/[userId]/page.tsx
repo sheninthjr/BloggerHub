@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-const page = () => {
+const page = ({ params }: { params: { userId: string } }) => {
   const [message, setMessage] = useState("");
   const [webSocket, setWebSocket] = useState(null);
   const [server, setServer] = useState([]);
   const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda");
   const [serverId, setServerId] = useState();
   let id = true;
-
+  console.log(params.userId);
   if (userId === serverId) {
     id = true;
   } else {
@@ -18,7 +18,7 @@ const page = () => {
   }
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
         setServer((p): any => [...p, data.payload.message]);
@@ -47,7 +47,7 @@ const page = () => {
           type: "message",
           payload: {
             message: message,
-            userId: userId,
+            userId: params.userId,
           },
         })
       );
@@ -66,9 +66,9 @@ const page = () => {
           />
           <button onClick={handleMessage}>Send</button>
         </div>
-        <div className="flex flex-col h-screen w-1/2 bg-white justify-end items-end text-black">
-          {true ? (
-            <div className="chat-end space-y-2">
+        {id ? (
+          <div className="flex flex-col justify-end items-end p-2 h-screen w-1/2 bg-white text-black">
+            <div className="chat chat-end space-y-2">
               <div className="chat-image avatar pr-2">
                 <div className="w-10 rounded-full">
                   <img
@@ -83,8 +83,10 @@ const page = () => {
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="chat-start space-y-2">
+          </div>
+        ) : (
+          <div className="flex flex-col justify-end items-start p-2 h-screen w-1/2 bg-white text-black">
+            <div className="chat chat-start space-y-2">
               <div className="chat-image avatar pl-2">
                 <div className="w-10 rounded-full">
                   <img
@@ -99,8 +101,8 @@ const page = () => {
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );
