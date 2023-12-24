@@ -1,16 +1,27 @@
 "use client";
+import { Elsie_Swash_Caps } from "next/font/google";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
   const [message, setMessage] = useState("");
   const [webSocket, setWebSocket] = useState(null);
   const [server, setServer] = useState([]);
+  const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda")
+  const [serverId, setServerId] = useState();
+  let id = true;
+  if (userId === serverId) {
+    id = true;
+  }
+  else {
+    id = false;
+  }
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    ws.onmessage = function (event) {
+    ws.onmessage = function(event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
         setServer((p): any => [...p, data.payload.message]);
+        setServerId(data.payload.userId);
       }
     };
     ws.onopen = () => {
@@ -28,18 +39,19 @@ const page = () => {
   }, []);
   const handleMessage = () => {
     if (webSocket) {
-        //@ts-ignore
+      //@ts-ignore
       webSocket.send(
-        JSON.stringify({ 
-            type: "message", 
-            payload: {
-                message: message 
-            } 
+        JSON.stringify({
+          type: "message",
+          payload: {
+            message: message,
+            userId: userId
+          }
         })
       );
-      console.log(message)
     }
   };
+
   return (
     <>
       <div className="flex justify-center h-screen bg-base-100">
@@ -52,14 +64,23 @@ const page = () => {
           />
           <button onClick={handleMessage}>Send</button>
         </div>
-        <div>
-            {server.map((messages,index)=>(
-                <p  key={index} className="text-white">{messages}</p>
+        <div>{
+          id ? (
+            <div className="flex flex-col justify-end items-end pb-4 pl-4 bg-white w-96 h-screen" >
+              {server.map((messages, index) => (
+                <p key={index} className="text-black">{messages}</p>
+              ))}
+            </div>
+          ) : (<div className="flex flex-col justify-end items-start pb-4 pr-4 bg-white w-96 h-screen" >
+            {server.map((messages, index) => (
+              <p key={index} className="text-black">{messages}</p>
             ))}
-        </div>
-      </div>
+          </div>
+          )}
+        </div >
+      </div >
     </>
   );
-};
+}
 
 export default page;

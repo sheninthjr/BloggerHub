@@ -16,6 +16,12 @@ const users: {
   }
 } = {}
 
+const userMessage: {
+  [userId: string]: {
+    message: [string],
+  }
+} = {}
+
 let counter = 0;
 wss.on("connection", async (ws) => {
   const wsId = counter++;
@@ -29,13 +35,16 @@ wss.on("connection", async (ws) => {
     }
     if (data.type === "message") {
       const message = data.payload.message;
+      const userId = data.payload.userId;
       const roomId = users[wsId].room;
+      userMessage[userId] = message;
       Object.keys(users).forEach((wsId) => {
         if (users[wsId].room === roomId) {
           users[wsId].ws.send(JSON.stringify({
             type: "message",
             payload: {
-              message
+              message,
+              userId
             }
           }))
         }
