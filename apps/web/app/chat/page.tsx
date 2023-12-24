@@ -6,18 +6,17 @@ const page = () => {
   const [message, setMessage] = useState("");
   const [webSocket, setWebSocket] = useState(null);
   const [server, setServer] = useState([]);
-  const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda")
+  const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda");
   const [serverId, setServerId] = useState();
   let id = true;
   if (userId === serverId) {
     id = true;
-  }
-  else {
+  } else {
     id = false;
   }
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
         setServer((p): any => [...p, data.payload.message]);
@@ -35,7 +34,7 @@ const page = () => {
       );
     };
     //@ts-ignore
-    setWebSocket(ws)
+    setWebSocket(ws);
   }, []);
   const handleMessage = () => {
     if (webSocket) {
@@ -45,8 +44,8 @@ const page = () => {
           type: "message",
           payload: {
             message: message,
-            userId: userId
-          }
+            userId: userId,
+          },
         })
       );
     }
@@ -64,23 +63,44 @@ const page = () => {
           />
           <button onClick={handleMessage}>Send</button>
         </div>
-        <div>{
-          id ? (
-            <div className="flex flex-col justify-end items-end pb-4 pl-4 bg-white w-96 h-screen" >
+        <div className="flex flex-col h-screen w-1/2 bg-white justify-end items-end text-black">
+          {true ? (
+            <div className="chat chat-end space-y-2">
+              <div className="chat-image avatar pr-2">
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS chat bubble component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                </div>
+              </div>
               {server.map((messages, index) => (
-                <p key={index} className="text-black">{messages}</p>
+                <div key={index} className="chat-bubble">
+                  {messages}
+                </div>
               ))}
             </div>
-          ) : (<div className="flex flex-col justify-end items-start pb-4 pr-4 bg-white w-96 h-screen" >
-            {server.map((messages, index) => (
-              <p key={index} className="text-black">{messages}</p>
-            ))}
-          </div>
+          ) : (
+            <div className="chat-start space-y-2">
+              <div className="chat-image avatar pl-2">
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS chat bubble component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                </div>
+              </div>
+              {server.map((messages, index) => (
+                <div key={index} className="chat-bubble">
+                  {messages}
+                </div>
+              ))}
+            </div>
           )}
-        </div >
-      </div >
+        </div>
+      </div>
     </>
   );
-}
+};
 
 export default page;
