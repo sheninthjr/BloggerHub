@@ -1,28 +1,29 @@
 "use client";
 
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const page = ({ params }: { params: { userId: string } }) => {
-  const [message, setMessage] = useState("");
-  const [webSocket, setWebSocket] = useState(null);
-  const [server, setServer] = useState([]);
-  const [userId, setUserId] = useState("2f304fc4-36ca-4d38-9b72-e51d96192eda");
-  const [serverId, setServerId] = useState();
+  const [message, setMessage] = useState<string>("");
+  const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
+  const [userId, setUserId] = useState<string>("2f304fc4-36ca-4d38-9b72-e51d96192eda");
+  const [serverId, setServerId] = useState<string>('');
   let id = true;
-  console.log(params.userId);
+
   if (userId === serverId) {
     id = true;
   } else {
     id = false;
   }
+
+  const userMessage: { [userID: string]: { messages: string } } = {};
+
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
     ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
-        setServer((p): any => [...p, data.payload.message]);
         setServerId(data.payload.userId);
+        userMessage[data.payload.userId] = { messages: data.payload.message };
       }
     };
     ws.onopen = () => {
@@ -51,6 +52,7 @@ const page = ({ params }: { params: { userId: string } }) => {
           },
         })
       );
+      userMessage[params.userId] = { messages: message };
     }
   };
 
@@ -77,9 +79,9 @@ const page = ({ params }: { params: { userId: string } }) => {
                   />
                 </div>
               </div>
-              {server.map((messages, index) => (
-                <div key={index} className="chat-bubble">
-                  {messages}
+              {Object.keys(userMessage).map((userId) => (
+                <div key={userId} className="chat-bubble">
+                  {userMessage[userId].messages}
                 </div>
               ))}
             </div>
@@ -95,9 +97,9 @@ const page = ({ params }: { params: { userId: string } }) => {
                   />
                 </div>
               </div>
-              {server.map((messages, index) => (
-                <div key={index} className="chat-bubble">
-                  {messages}
+              {Object.keys(userMessage).map((userId) => (
+                <div key={userId} className="chat-bubble">
+                  {userMessage[userId].messages}
                 </div>
               ))}
             </div>

@@ -18,7 +18,7 @@ const users: {
 
 const userMessage: {
   [userId: string]: {
-    message: [string],
+    message: [string]
   }
 } = {};
 
