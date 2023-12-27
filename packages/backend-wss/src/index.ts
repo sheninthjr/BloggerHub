@@ -51,7 +51,7 @@ wss.on("connection", async (ws) => {
       if (!existing) {
         await prisma.chatUser.create({
           data: {
-            id: randomUUID(),
+            id: Math.floor(Math.random() * 100000) + 1,
             senderId: data.payload.senderId,
             receiverId: data.payload.receiverId
           }
@@ -69,12 +69,15 @@ wss.on("connection", async (ws) => {
             { senderId: data.payload.senderId },
             { receiverId: data.payload.receiverId },
           ],
+        },
+        select:{
+          id:true
         }
       })
       if (existing) {
         await prisma.message.create({
           data:{
-            authorId: userId,
+            authorId: existing.id,
             message:message
           }
         })
