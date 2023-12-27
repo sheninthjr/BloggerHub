@@ -10,18 +10,15 @@ const page = ({ params }: { params: { userId: string } }) => {
     "2f304fc4-36ca-4d38-9b72-e51d96192eda"
   );
   const [serverId, setServerId] = useState<string>("");
+
   let id = true;
 
-  if (userId === serverId) {
+  if (params.userId === serverId) {
     id = true;
   } else {
     id = false;
   }
 
-  interface userData {
-    [userId: string]: { messages: string[] };
-  }
-  const userMessage: userData = {};
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
@@ -30,14 +27,6 @@ const page = ({ params }: { params: { userId: string } }) => {
       if (data.type === "message") {
         setServerId(data.payload.userId);
         setServer((p): any => [...p, data.payload.message]);
-        const userId = data.payload.userId;
-        const message = data.payload.message;
-
-        if (userMessage.hasOwnProperty(userId)) {
-          userMessage[userId].messages.push(message);
-        } else {
-          userMessage[userId] = { messages: [message] };
-        }
       }
     };
     ws.onopen = () => {
@@ -46,13 +35,15 @@ const page = ({ params }: { params: { userId: string } }) => {
           type: "join",
           payload: {
             roomId: 1,
+            senderId: params.userId,
+            receiverId: userId
           },
         })
       );
     };
     //@ts-ignore
     setWebSocket(ws);
-  }, []);
+  }, [params.userId]);
 
   const handleMessage = () => {
     if (webSocket) {
@@ -63,15 +54,11 @@ const page = ({ params }: { params: { userId: string } }) => {
           payload: {
             message: message,
             userId: params.userId,
+            senderId: params.userId,
+            receiverId: userId
           },
         })
       );
-      const userId = params.userId;
-      if (userMessage.hasOwnProperty(userId)) {
-        userMessage[userId].messages.push(message);
-      } else {
-        userMessage[userId] = { messages: [message] };
-      }
     }
   };
 
@@ -109,7 +96,7 @@ const page = ({ params }: { params: { userId: string } }) => {
           <div className="flex flex-col justify-end items-start p-2 h-screen w-1/2 bg-white text-black">
             <div className="chat chat-start space-y-2">
               <div className="avatar placeholder">
-                <div className="bg-neutral text-neutral-content rounded-full w-16">
+                <div className="bg-neutral text-neutral-content rounded-full w-10">
                   <span className="text-3xl">D</span>
                 </div>
               </div>
