@@ -5,8 +5,11 @@ import React, { useEffect, useState } from "react";
 const page = ({ params }: { params: { userId: string } }) => {
   const [message, setMessage] = useState<string>("");
   const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
-  const [userId, setUserId] = useState<string>("2f304fc4-36ca-4d38-9b72-e51d96192eda");
-  const [serverId, setServerId] = useState<string>('');
+  const [server, setServer] = useState([]);
+  const [userId, setUserId] = useState<string>(
+    "2f304fc4-36ca-4d38-9b72-e51d96192eda"
+  );
+  const [serverId, setServerId] = useState<string>("");
   let id = true;
 
   if (userId === serverId) {
@@ -15,15 +18,26 @@ const page = ({ params }: { params: { userId: string } }) => {
     id = false;
   }
 
-  const userMessage: { [userID: string]: { messages: string } } = {};
+  interface userData {
+    [userId: string]: { messages: string[] };
+  }
+  const userMessage: userData = {};
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    ws.onmessage = function (event) {
+    ws.onmessage = function(event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
         setServerId(data.payload.userId);
-        userMessage[data.payload.userId] = { messages: data.payload.message };
+        setServer((p): any => [...p, data.payload.message]);
+        const userId = data.payload.userId;
+        const message = data.payload.message;
+
+        if (userMessage.hasOwnProperty(userId)) {
+          userMessage[userId].messages.push(message);
+        } else {
+          userMessage[userId] = { messages: [message] };
+        }
       }
     };
     ws.onopen = () => {
@@ -52,7 +66,12 @@ const page = ({ params }: { params: { userId: string } }) => {
           },
         })
       );
-      userMessage[params.userId] = { messages: message };
+      const userId = params.userId;
+      if (userMessage.hasOwnProperty(userId)) {
+        userMessage[userId].messages.push(message);
+      } else {
+        userMessage[userId] = { messages: [message] };
+      }
     }
   };
 
@@ -79,9 +98,9 @@ const page = ({ params }: { params: { userId: string } }) => {
                   />
                 </div>
               </div>
-              {Object.keys(userMessage).map((userId) => (
-                <div key={userId} className="chat-bubble">
-                  {userMessage[userId].messages}
+              {server.map((messages, index) => (
+                <div key={index} className="chat-bubble">
+                  {messages}
                 </div>
               ))}
             </div>
@@ -89,17 +108,14 @@ const page = ({ params }: { params: { userId: string } }) => {
         ) : (
           <div className="flex flex-col justify-end items-start p-2 h-screen w-1/2 bg-white text-black">
             <div className="chat chat-start space-y-2">
-              <div className="chat-image avatar pl-2">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
+              <div className="avatar placeholder">
+                <div className="bg-neutral text-neutral-content rounded-full w-16">
+                  <span className="text-3xl">D</span>
                 </div>
               </div>
-              {Object.keys(userMessage).map((userId) => (
-                <div key={userId} className="chat-bubble">
-                  {userMessage[userId].messages}
+              {server.map((messages, index) => (
+                <div key={index} className="chat-bubble">
+                  {messages}
                 </div>
               ))}
             </div>
