@@ -40,49 +40,22 @@ wss.on("connection", async (ws) => {
         receiverId: data.payload.receiverId,
         ws
       }
-      const existing = await prisma.chatUser.findFirst({
-        where: {
-          AND: [
-            { senderId: data.payload.senderId },
-            { receiverId: data.payload.receiverId },
-          ],
-        }
-      })
-      if (!existing) {
-        await prisma.chatUser.create({
-          data: {
-            id: Math.floor(Math.random() * 100000) + 1,
-            senderId: data.payload.senderId,
-            receiverId: data.payload.receiverId
-          }
-        })
-      }
     }
+    await prisma.chatUser.create({
+      data:{
+        id:"df",
+        room:"sf",
+        senderId:"sdfa",
+        receiverId:"afsd",
+        messages:"das"
+      }
+    })
     if (data.type === "message") {
       const message = data.payload.message;
       const senderId = data.payload.senderId;
       const receiverId = data.payload.receiverId;
       const roomId = users[wsId].room;
       userMessage[senderId] = message;
-      const existing = await prisma.chatUser.findFirst({
-        where: {
-          AND: [
-            { senderId: data.payload.senderId },
-            { receiverId: data.payload.receiverId },
-          ],
-        },
-        select:{
-          id:true
-        }
-      })
-      if (existing) {
-        await prisma.message.create({
-          data:{
-            authorId: existing.id,
-            message:message
-          }
-        })
-      }
 
       Object.keys(users).forEach((wsId) => {
         if (users[wsId].room === roomId) {

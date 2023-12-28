@@ -12,14 +12,18 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb_chat
+  postgres_chat:
+    container_name: chat
+    image: postgres:13
     restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mydb
     ports:
-      - 27017:27017
+      - 5433:5432
     volumes:
-      - mongodb_data:/data/db
+      - postgres_data1:/var/lib/postgresql/data/
 volumes:
   postgres_data:
-  mongodb_data:
+  postgres_data1:
