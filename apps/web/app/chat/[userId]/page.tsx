@@ -35,8 +35,8 @@ const page = ({ params }: { params: { userId: string } }) => {
           type: "join",
           payload: {
             roomId: 1,
-            senderId: params.userId,
-            receiverId: userId
+            senderId: userId,
+            receiverId: params.userId
           },
         })
       );
@@ -53,9 +53,8 @@ const page = ({ params }: { params: { userId: string } }) => {
           type: "message",
           payload: {
             message: message,
-            userId: params.userId,
-            senderId: params.userId,
-            receiverId: userId
+            senderId: userId,
+            receiverId: params.userId
           },
         })
       );

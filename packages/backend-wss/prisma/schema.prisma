@@ -11,16 +11,9 @@ datasource db {
 }
 
 model ChatUser {
-  id         Int       @id @default(autoincrement())
+  id         String @id
+  room       Int
   senderId   String
   receiverId String
-  messages   Message[]
-}
-
-model Message {
-  id       Int      @id @default(autoincrement())
-  author   ChatUser @relation(fields: [authorId], references: [id])
-  authorId Int
-  message  String
-  created  DateTime @default(now())
+  messages   String
 }

@@ -60,9 +60,10 @@ wss.on("connection", async (ws) => {
     }
     if (data.type === "message") {
       const message = data.payload.message;
-      const userId = data.payload.userId;
+      const senderId = data.payload.senderId;
+      const receiverId = data.payload.receiverId;
       const roomId = users[wsId].room;
-      userMessage[userId] = message;
+      userMessage[senderId] = message;
       const existing = await prisma.chatUser.findFirst({
         where: {
           AND: [
@@ -82,13 +83,15 @@ wss.on("connection", async (ws) => {
           }
         })
       }
+
       Object.keys(users).forEach((wsId) => {
         if (users[wsId].room === roomId) {
           users[wsId].ws.send(JSON.stringify({
             type: "message",
             payload: {
               message,
-              userId
+              senderId,
+              receiverId
             }
           }))
         }
