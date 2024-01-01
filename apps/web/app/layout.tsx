@@ -6,6 +6,7 @@ import RecoidContextProvider from "./lib/recoilContextProvider";
 import NavBar from "@/components/NavBar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./utils/authOptions";
+import SideBar from "@/components/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default async function RootLayout({
           <RecoidContextProvider>
             <ApolloWrapper>
               <NavBar />
+              <SideBar/>
               {children}
             </ApolloWrapper>
           </RecoidContextProvider>
