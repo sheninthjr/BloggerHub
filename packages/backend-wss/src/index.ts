@@ -2,7 +2,6 @@ import express from 'express'
 import http from 'http'
 import { WebSocketServer } from 'ws'
 import { PrismaClient } from "@prisma/client";
-import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +16,6 @@ const users: {
   [key: string]: {
     room: string,
     senderId: string,
-    receiverId: string,
     ws: any
   }
 } = {}
@@ -37,50 +35,16 @@ wss.on("connection", async (ws) => {
       users[wsId] = {
         room: data.payload.roomId,
         senderId: data.payload.senderId,
-        receiverId: data.payload.receiverId,
         ws
-      }
-      const existing = await prisma.chatUser.findFirst({
-        where: {
-          AND: [
-            { senderId: data.payload.senderId },
-            { receiverId: data.payload.receiverId },
-          ],
-        }
-      })
-      if (!existing) {
-        await prisma.chatUser.create({
-          data: {
-            id: Math.floor(Math.random()*100000)+1,
-            senderId: data.payload.senderId,
-            receiverId: data.payload.receiverId
-          }
-        })
       }
     }
 
     if (data.type === "message") {
       const message = data.payload.message;
       const senderId = data.payload.senderId;
-      const receiverId = data.payload.receiverId;
+      const timestamp = data.payload.timestamp;
       const roomId = users[wsId].room;
       userMessage[senderId] = message;
-      const existing = await prisma.chatUser.findFirst({
-        where: {
-          AND: [
-            { senderId: data.payload.senderId },
-            { receiverId: data.payload.receiverId },
-          ],
-        }
-      })
-      if (existing) {
-        await prisma.message.create({
-          data:{
-            authorId: existing.id,
-            message:message
-          }
-        })
-      }
       Object.keys(users).forEach((wsId) => {
         if (users[wsId].room === roomId) {
           users[wsId].ws.send(JSON.stringify({
@@ -88,7 +52,7 @@ wss.on("connection", async (ws) => {
             payload: {
               message,
               senderId,
-              receiverId
+              timestamp
             }
           }))
         }

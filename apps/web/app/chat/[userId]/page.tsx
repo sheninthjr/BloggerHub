@@ -1,32 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 const page = ({ params }: { params: { userId: string } }) => {
   const [message, setMessage] = useState<string>("");
   const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
-  const [server, setServer] = useState([]);
-  const [userId, setUserId] = useState<string>(
-    "2f304fc4-36ca-4d38-9b72-e51d96192eda"
+  const [server, setServer] = useState<{ message: string; senderId: string }[]>(
+    []
   );
-  const [serverId, setServerId] = useState<string>("");
-
-  let id = true;
-
-  if (params.userId === serverId) {
-    id = true;
-  } else {
-    id = false;
-  }
-
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
-        setServerId(data.payload.userId);
-        setServer((p): any => [...p, data.payload.message]);
+        setServer((prevMessages): any => [
+          ...prevMessages,
+          { message: data.payload.message, senderId: data.payload.senderId },
+        ]);
       }
     };
     ws.onopen = () => {
@@ -35,8 +26,7 @@ const page = ({ params }: { params: { userId: string } }) => {
           type: "join",
           payload: {
             roomId: 1,
-            senderId: userId,
-            receiverId: params.userId
+            senderId: params.userId,
           },
         })
       );
@@ -53,8 +43,8 @@ const page = ({ params }: { params: { userId: string } }) => {
           type: "message",
           payload: {
             message: message,
-            senderId: userId,
-            receiverId: params.userId
+            senderId: params.userId,
+            timestamp: new Date().toString(),
           },
         })
       );
@@ -73,40 +63,28 @@ const page = ({ params }: { params: { userId: string } }) => {
           />
           <button onClick={handleMessage}>Send</button>
         </div>
-        {id ? (
-          <div className="flex flex-col justify-end items-end p-2 h-screen w-1/2 bg-white text-black">
-            <div className="chat chat-end space-y-2">
-              <div className="chat-image avatar pr-2">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
-                </div>
+        <div className="flex flex-col justify-end p-2 h-screen w-1/2 bg-white text-black">
+          {server.map((messages, index) => (
+            <div
+              className={`chat space-y-2 ${
+                messages.senderId === params.userId
+                  ? "chat-end justify-end items-end"
+                  : "chat-start justify-start items-start"
+              }`}
+            >
+              <div
+                key={index}
+                className={`chat-bubble rounded-lg ${
+                  messages.senderId === params.userId
+                    ? "bg-black-500 text-white self"
+                    : "bg-gray-300 text-black other"
+                }`}
+              >
+                {messages.message}
               </div>
-              {server.map((messages, index) => (
-                <div key={index} className="chat-bubble">
-                  {messages}
-                </div>
-              ))}
             </div>
-          </div>
-        ) : (
-          <div className="flex flex-col justify-end items-start p-2 h-screen w-1/2 bg-white text-black">
-            <div className="chat chat-start space-y-2">
-              <div className="avatar placeholder">
-                <div className="bg-neutral text-neutral-content rounded-full w-10">
-                  <span className="text-3xl">D</span>
-                </div>
-              </div>
-              {server.map((messages, index) => (
-                <div key={index} className="chat-bubble">
-                  {messages}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     </>
   );
