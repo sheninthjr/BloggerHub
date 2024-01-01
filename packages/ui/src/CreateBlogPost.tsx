@@ -20,6 +20,7 @@ const CreateBlogPost = () => {
     title: "",
     description: "",
     tags: "",
+    userId: "2f304fc4-36ca-4d38-9b72-e51d96192eda"
   });
 
   const [createUser, { data }] = useMutation(POST);

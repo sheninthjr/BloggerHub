@@ -8,8 +8,6 @@ import Skeleton from "../components/Skeleton";
 //@ts-ignore
 import CreateBlogPost from "./CreateBlogPost";
 
-
-
 const BlogPost = () => {
   const { loading, error, data } = useQuery(GET_BLOG_POST);
   const [createMode, setCreateMode] = useState(false);
@@ -51,24 +49,33 @@ const BlogPost = () => {
             </div>
           )}
           <div
-            className={`p-10 flex space-x-4 flex-wrap justify-items-center justify-center${
-              createMode ? "filter blur-lg" : ""
+            className={`pb-10 flex w-1/2 flex-col justify-center items-center space-y-4${
+              createMode ? " filter blur-lg" : ""
             }`}
           >
             {blogPosts.map((blogPost, index: number) => (
               <div
                 key={index}
-                className="card w-96 bg-slate-500 shadow-xl mb-4"
+                className="card w-96 bg-black shadow-xl mb-4"
               >
                 <div className="card-body">
-                  <h2 className="card-title">{blogPost.title}</h2>
-                  <div className="badge badge-warning">{blogPost.date}</div>
-                  <p>{blogPost.description}</p>
+                  <h2 className="card-title">
+                    <div className="avatar">
+                      <div className="w-10 rounded-full mr-2 ring ring-primary ring-offset-base-100 ring-offset-2">
+                        <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                      </div>
+                    </div>
+                    <div className="flex flex-col justify-start items-start text-white">
+                    {blogPost.title}
+                    <div className="text-xs font-light text-slate-400">{blogPost.date}</div>
+                    </div>
+                    </h2>
+                  <p className="text-slate-200 font-medium">{blogPost.description}</p>
                   <div className="card-actions justify-end">
                     {Array.isArray(blogPost.tags) &&
                       blogPost.tags?.map((tag: any, tagIndex: number) => (
-                        <div key={tagIndex} className="badge badge-info">
-                          {tag}
+                        <div key={tagIndex} className="font-semibold text-slate-400">
+                          #{tag}
                         </div>
                       ))}
                   </div>

@@ -6,9 +6,10 @@ const prisma = new PrismaClient();
 
 const formatDate = () => {
   const date = new Date();
-  const formattedDate = `${date.getDate()}-${
-    date.getMonth() + 1
-  }-${date.getFullYear()}`;
+  const formattedDay = String(date.getDate()).padStart(2, '0');
+  const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+  const formattedYear = date.getFullYear();
+  const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
   return formattedDate;
 };
 

@@ -5,9 +5,9 @@ import React, { use, useEffect, useState } from "react";
 const page = ({ params }: { params: { userId: string } }) => {
   const [message, setMessage] = useState<string>("");
   const [webSocket, setWebSocket] = useState<WebSocket | null>(null);
-  const [server, setServer] = useState<{ message: string; senderId: string }[]>(
-    []
-  );
+  const [server, setServer] = useState<
+    { message: string; senderId: string; timestamp: string }[]
+  >([]);
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
@@ -16,7 +16,11 @@ const page = ({ params }: { params: { userId: string } }) => {
       if (data.type === "message") {
         setServer((prevMessages): any => [
           ...prevMessages,
-          { message: data.payload.message, senderId: data.payload.senderId },
+          {
+            message: data.payload.message,
+            senderId: data.payload.senderId,
+            timestamp: data.payload.timestamp,
+          },
         ]);
       }
     };
@@ -38,13 +42,21 @@ const page = ({ params }: { params: { userId: string } }) => {
   const handleMessage = () => {
     if (webSocket) {
       //@ts-ignore
+      const currentTimestamp = new Date();
+      const hours = currentTimestamp.getHours();
+      const minutes = currentTimestamp.getMinutes();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = hours % 12 || 12;
+      const formattedTime = `${formattedHours}:${
+        minutes < 10 ? "0" : ""
+      }${minutes} ${ampm}`;
       webSocket.send(
         JSON.stringify({
           type: "message",
           payload: {
             message: message,
             senderId: params.userId,
-            timestamp: new Date().toString(),
+            timestamp: formattedTime,
           },
         })
       );
@@ -81,6 +93,11 @@ const page = ({ params }: { params: { userId: string } }) => {
                 }`}
               >
                 {messages.message}
+                <div className="chat-footer flex justify-end items-end">
+                  <time className="text-xs opacity-50">
+                    {messages.timestamp}
+                  </time>
+                </div>
               </div>
             </div>
           ))}

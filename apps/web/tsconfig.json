@@ -23,6 +23,6 @@
       "@/ui/*": ["../../packages/ui/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/lib/ApolloWrapper.tsx", "../../packages/ui/src/CreateUser.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/lib/ApolloWrapper.tsx", "../../packages/ui/src/CreateUser.tsx", "../../packages/ui/src/BlogPost.tsx"],
   "exclude": ["node_modules"]
 }
