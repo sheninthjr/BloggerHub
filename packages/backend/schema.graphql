@@ -1,8 +1,8 @@
 type User {
   id: ID
   email: String!
-  firstname: String!
-  lastname: String!
+  name: String!
+  image: String!
   blogPost: [BlogPost!]
   friends: [String!]!
   sendFriendReq: [String!]!
@@ -10,7 +10,7 @@ type User {
 
 
 type Query {
-  getUser(id: ID!): [User]
+  getUser: [User]
   blogPost: [BlogPost]
 }
 
@@ -26,8 +26,8 @@ type BlogPost {
 
 input CreateUserInput {
   email: String!
-  firstname: String!
-  lastname: String!
+  name: String!
+  image: String!
 }
 
 input CreateBlogPost {

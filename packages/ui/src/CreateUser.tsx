@@ -5,23 +5,15 @@ import { useMutation } from "@apollo/client";
 import { gql } from "graphql-tag";
 //@ts-ignore
 import SuccessButton from "../components/SuccessButton";
+import { CREATE_USER } from "gql";
 
-const CREATE_USER = gql`
-  mutation CreateUser($input: CreateUserInput!) {
-    CreateUser(input: $input) {
-      id
-      email
-      firstname
-      lastname
-    }
-  }
-`;
+
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
     email: "",
-    firstname: "",
-    lastname: "",
+    name: "",
+    image: "",
   });
 
   const [createUser, { data }] = useMutation(CREATE_USER);
@@ -77,7 +69,7 @@ const CreateUser = () => {
               placeholder="Firstname"
               className="input input-bordered input-info w-full max-w-xs"
               name="firstname"
-              value={formData.firstname}
+              value={formData.name}
               onChange={handleChange}
             />
           </div>
@@ -87,7 +79,7 @@ const CreateUser = () => {
               placeholder="Lastname"
               className="input input-bordered input-info w-full max-w-xs"
               name="lastname"
-              value={formData.lastname}
+              value={formData.image}
               onChange={handleChange}
             />
           </div>

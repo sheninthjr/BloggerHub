@@ -22,13 +22,13 @@ const resolvers = {
         }
         const parsedUser = UserInput.safeParse(input);
         if (parsedUser.success) {
-          const { email, firstname, lastname } = input;
+          const { email, name, image } = input;
           const newUser = await prisma.user.create({
             data: {
               id: randomUUID(),
               email,
-              firstname,
-              lastname,
+              name,
+              image
             },
           });
           return newUser;
@@ -135,19 +135,7 @@ const resolvers = {
     },
   },
   Query: {
-    getUser: (_, { id }: { id: string }) =>
-      prisma.user.findMany({
-        where: { id: id },
-        select: {
-          id: true,
-          email: true,
-          firstname: true,
-          lastname: true,
-          blogPost: true,
-          friends: true,
-          sendFriendReq: true,
-        },
-      }),
+    getUser: () => prisma.user.findMany(),
     blogPost: () => prisma.blogPost.findMany(),
   },
 };

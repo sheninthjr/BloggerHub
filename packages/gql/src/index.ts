@@ -1,16 +1,25 @@
 import { gql } from "@apollo/client";
 
 export const USER_DETAIL = gql`
-query User($getUserId: ID!) {
-  getUser(id: $getUserId) {
-    id
-    email
-    firstname
-    lastname
-    friends
-    sendFriendReq
+  query GetUser {
+    getUser {
+      id
+      email
+      name
+      image
+    }
   }
-}
+`;
+
+export const CREATE_USER = gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    CreateUser(input: $input) {
+      id
+      email
+      name
+      image
+    }
+  }
 `;
 
 export const FriendReq = gql`

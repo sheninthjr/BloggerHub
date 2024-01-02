@@ -22,8 +22,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions)
-  console.log(session)
   return (
     <html lang="en" data-theme="dark">
       <body className={inter.className}>
@@ -33,12 +31,9 @@ export default async function RootLayout({
             <div className="fixed top-0 left-0 w-full z-20">
               <NavBar />
             </div>
-            <div className="fixed top-0 left-0 h-screen w-1/5 bg-base-100 z-10">
-              <SideBar />
-            </div>
-            <div className="pl-56 pt-24">
-              {children}
-            </div>
+              <SideBar>
+                {children}
+              </SideBar>
             </ApolloWrapper>
             </NextAuthProvider>
           </RecoidContextProvider>

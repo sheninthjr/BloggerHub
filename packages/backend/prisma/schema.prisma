@@ -13,11 +13,11 @@ datasource db {
 model User {
   id            String     @id
   email         String     @unique
-  firstname     String
-  lastname      String
+  name          String
+  image         String
   blogPost      BlogPost[]
-  friends       String[]   
-  sendFriendReq String[]   
+  friends       String[]
+  sendFriendReq String[]
 }
 
 model BlogPost {
