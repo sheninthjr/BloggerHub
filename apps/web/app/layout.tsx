@@ -4,8 +4,6 @@ import "./globals.css";
 import { ApolloWrapper } from "./lib/ApolloWrapper";
 import RecoidContextProvider from "./lib/recoilContextProvider";
 import NavBar from "@/components/NavBar";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./utils/authOptions";
 import SideBar from "@/components/SideBar";
 import NextAuthProvider from "./lib/NextAuthProvider";
 
@@ -23,7 +21,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" className="bg-black">
       <body className={inter.className}>
           <RecoidContextProvider>
             <NextAuthProvider>

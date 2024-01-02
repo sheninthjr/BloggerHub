@@ -2,8 +2,10 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { USER_DETAIL } from "gql";
+import { useSession } from "next-auth/react";
 
 const UserCard = () => {
+  const { data: session } = useSession();
   const { loading, error, data } = useQuery(USER_DETAIL);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -12,7 +14,7 @@ const UserCard = () => {
     <>
       <div className="flex flex-col space-y-3">
         {users.map((user: any) => (
-          <div key={user.id} className="bg-base-100">
+          <div key={user.id} className="bg-black">
             <div className="card w-80 flex justify-center items-start p-6 h-20 bg-base-100 shadow-xl border border-slate-400">
               <div className="flex justify-between items-center w-full">
                 <div className="flex justify-center items-center space-x-2">

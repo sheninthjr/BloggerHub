@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 
 const page = ({ params }: { params: { userId: string } }) => {
   const [message, setMessage] = useState<string>("");
@@ -8,6 +8,7 @@ const page = ({ params }: { params: { userId: string } }) => {
   const [server, setServer] = useState<
     { message: string; senderId: string; timestamp: string }[]
   >([]);
+  const messagesContainerRef = useRef(null);
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
@@ -60,22 +61,31 @@ const page = ({ params }: { params: { userId: string } }) => {
           },
         })
       );
+      setMessage("");
+    }
+  };
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      //@ts-ignore
+      messagesContainerRef.current.scrollTop =
+        //@ts-ignore
+        messagesContainerRef.current.scrollHeight;
+    }
+  }, [server]);
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === "Enter") {
+      handleMessage();
     }
   };
 
   return (
     <>
-      <div className="flex justify-center h-screen bg-base-100">
-        <div className="flex flex-col justify-center">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="bg-white rounded-lg h-10 text-black p-2"
-          />
-          <button onClick={handleMessage}>Send</button>
-        </div>
-        <div className="flex flex-col justify-end p-2 h-screen w-1/2 bg-white text-black">
+      <div className="flex flex-col border-r justify-center items-center h-screen w-1/2 bg-black overflow-x-hidden">
+        <div
+          className="flex flex-col justify-end p-2 h-screen w-full bg-black text-black"
+          ref={messagesContainerRef}
+        >
           {server.map((messages, index) => (
             <div
               className={`chat space-y-2 ${
@@ -83,14 +93,15 @@ const page = ({ params }: { params: { userId: string } }) => {
                   ? "chat-end justify-end items-end"
                   : "chat-start justify-start items-start"
               }`}
+              key={index}
             >
               <div
-                key={index}
                 className={`chat-bubble rounded-lg ${
                   messages.senderId === params.userId
-                    ? "bg-black-500 text-white self"
-                    : "bg-gray-300 text-black other"
+                    ? "bg-slate-800 text-white self"
+                    : "bg-gray-100 text-black other"
                 }`}
+                style={{ wordWrap: "break-word" }}
               >
                 {messages.message}
                 <div className="chat-footer flex justify-end items-end">
@@ -101,6 +112,22 @@ const page = ({ params }: { params: { userId: string } }) => {
               </div>
             </div>
           ))}
+          <div className="flex justify-between p-4">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Message"
+              onKeyPress={handleKeyPress}
+              className="w-full bg-slate-800 border border-black focus:bg-slate-800 focus:outline-none text-white rounded-lg px-4 py-2"
+            />
+            <button
+              onClick={handleMessage}
+              className="bg-slate-900 w-10 text-white rounded-xl ml-4 text-3xl"
+            >
+              {`>`}
+            </button>
+          </div>
         </div>
       </div>
     </>
