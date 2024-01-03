@@ -34,13 +34,23 @@ const BlogPost = () => {
   }
 
   const blogPosts: blogPostType[] = data.blogPost || [];
+  
+  const sortedBlogPosts = [...blogPosts].sort((a, b) => {
+    //@ts-ignore
+    const dateA = new Date(a.lastUpdated).getTime();
+    //@ts-ignore
+    const dateB = new Date(b.lastUpdated).getTime();
+    return dateA - dateB;
+  });
+
+  const reversedBlogPosts = sortedBlogPosts.reverse();
 
   return (
     <>
       {isClient ? (
         <Skeleton />
       ) : (
-        <div className="bg-base-100">
+        <div className="">
           {createMode && (
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
               <div className="p-8 rounded shadow-lg">
@@ -49,14 +59,14 @@ const BlogPost = () => {
             </div>
           )}
           <div
-            className={`pb-10 flex w-1/2 flex-col justify-center items-center space-y-4${
+            className={`flex w-1/2 flex-col justify-center items-center space-y-4${
               createMode ? " filter blur-lg" : ""
             }`}
           >
-            {blogPosts.map((blogPost, index: number) => (
+            {reversedBlogPosts.map((blogPost, index: number) => (
               <div
                 key={index}
-                className="card w-96 bg-black shadow-xl mb-4"
+                className="card w-96 bg-black border shadow-xl"
               >
                 <div className="card-body">
                   <h2 className="card-title">
