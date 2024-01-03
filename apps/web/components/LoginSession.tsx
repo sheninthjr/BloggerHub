@@ -7,7 +7,7 @@ const LoginSession = () => {
   if (session) {
     return (
       <>
-        <div className="flex justify-between items-center rounded-lg space-x-3 pl-2 pr-2 text-white bg-slate-900">
+        <div className="flex justify-between items-center rounded-lg space-x-3 pl-2 pr-2 text-white bg-black">
           <button
             className="flex justify-center items-center w-full h-8"
             onClick={() => signOut()}

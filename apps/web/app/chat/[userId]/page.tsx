@@ -81,7 +81,7 @@ const page = ({ params }: { params: { userId: string } }) => {
 
   return (
     <>
-      <div className="flex flex-col border-r justify-center items-center h-screen w-1/2 bg-black overflow-x-hidden">
+      <div className="flex flex-col border-r justify-center items-center h-screen w-1/3 bg-black overflow-x-hidden ml-3">
         <div
           className="flex flex-col justify-end p-2 h-screen w-full bg-black text-black"
           ref={messagesContainerRef}
@@ -119,7 +119,7 @@ const page = ({ params }: { params: { userId: string } }) => {
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Message"
               onKeyPress={handleKeyPress}
-              className="w-full bg-slate-800 border border-black focus:bg-slate-800 focus:outline-none text-white rounded-lg px-4 py-2"
+              className="w-full bg-slate-800 border relative z-10 border-black focus:bg-slate-800 focus:outline-none text-white rounded-lg px-4 py-2"
             />
             <button
               onClick={handleMessage}

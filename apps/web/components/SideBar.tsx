@@ -37,7 +37,7 @@ const SideBar = ({ children }: any) => {
   return (
     <>
       <div className="flex ml-10 h-screen">
-        <div className="h-screen ml-96 w-64 border-r border-l bg-black fixed">
+        <div className="h-screen ml-96 w-64 bg-gray-900 fixed">
           <div className="flex flex-col h-screen justify-end items-center">
             <div className="pt-28 space-y-10">
               <div className="font-bold text-white text-lg hover:scale-105 hover:text-3xl transition duration-300">
