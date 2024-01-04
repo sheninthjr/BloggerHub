@@ -10,7 +10,8 @@ type User {
 
 
 type Query {
-  getUser: [User]
+  getAllUser: [User]
+  getUser(id: ID!): [User]
   blogPost: [BlogPost]
 }
 

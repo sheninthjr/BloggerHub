@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LoginSession from "./LoginSession";
-import { CREATE_USER } from "gql";
-import { useMutation } from "@apollo/client";
+import { CREATE_USER, UserIdDetails } from "gql";
+import { useMutation, useQuery } from "@apollo/client";
+import { useSetRecoilState } from "recoil";
+import { userDetails } from '../../../packages/store/atoms/userDetails'
 
 const SideBar = ({ children }: any) => {
   const { data: session } = useSession();
@@ -14,7 +16,10 @@ const SideBar = ({ children }: any) => {
     image: session?.user?.image ?? null,
   };
 
+  const setUserDetail = useSetRecoilState(userDetails)
+  const [userId, setUserId] = useState("");
   const [createUser, { data }] = useMutation(CREATE_USER);
+
   useEffect(() => {
     const handleCreateUser = async () => {
       try {
@@ -27,12 +32,29 @@ const SideBar = ({ children }: any) => {
             },
           },
         });
+        setUserId(result.data.CreateUser.id);
       } catch (error) {
         console.error(error);
       }
     };
     handleCreateUser();
   }, [session]);
+
+  const { loading: loadingUser, data: userData } = useQuery(UserIdDetails, {
+    variables: {
+      getUserId: userId,
+    },
+  });
+
+  if (userData && userId) {
+    setUserDetail({
+      id: userData.getUser[0].id,
+      name: userData.getUser[0].name,
+      image: userData.getUser[0].image,
+    });
+  }
+  
+  
 
   return (
     <>

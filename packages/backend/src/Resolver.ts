@@ -23,6 +23,11 @@ const resolvers = {
         const parsedUser = UserInput.safeParse(input);
         if (parsedUser.success) {
           const { email, name, image } = input;
+          const userExist = await prisma.user.findUnique({
+            where:{email:email},
+            select:{id:true}
+          })
+          if(!userExist){
           const newUser = await prisma.user.create({
             data: {
               id: randomUUID(),
@@ -32,6 +37,8 @@ const resolvers = {
             },
           });
           return newUser;
+        }
+        return userExist;
         }
       } catch (e) {
         throw new Error("Failed to create new user");
@@ -135,7 +142,20 @@ const resolvers = {
     },
   },
   Query: {
-    getUser: () => prisma.user.findMany(),
+    getAllUser: () => prisma.user.findMany(),
+    getUser: (_, { id }: { id: string }) =>
+      prisma.user.findMany({
+        where: { id: id },
+        select: {
+          id: true,
+          email: true,
+          name:true,
+          image:true,
+          blogPost: true,
+          friends: true,
+          sendFriendReq: true,
+        },
+      }),
     blogPost: () => prisma.blogPost.findMany(),
   },
 };
