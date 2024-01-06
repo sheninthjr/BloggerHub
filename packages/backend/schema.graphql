@@ -8,7 +8,6 @@ type User {
   sendFriendReq: [String!]!
 }
 
-
 type Query {
   getAllUser: [User]
   getUser(id: ID): [User]
@@ -20,6 +19,7 @@ type BlogPost {
   id: ID
   title: String!
   date: String!
+  image: String!
   description: String!
   tags: [String!]!
   user: User!
@@ -36,6 +36,7 @@ input CreateBlogPost {
   title: String!
   description: String!
   tags: [String!]!
+  image: String!
   userId: String!
 }
 

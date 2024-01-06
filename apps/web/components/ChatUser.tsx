@@ -2,12 +2,12 @@
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { userDetails } from "../../../../packages/store/atoms/userDetails";
+import { userDetails } from "../../../packages/store/atoms/userDetails";
 import { USER_DETAIL } from "gql";
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
 
-const page = () => {
+const ChatUser = () => {
   const { data: session } = useSession();
   const userState = useRecoilValue(userDetails);
   const { loading, error, data } = useQuery(USER_DETAIL);
@@ -51,4 +51,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ChatUser;

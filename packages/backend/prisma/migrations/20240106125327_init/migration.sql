@@ -15,6 +15,7 @@ CREATE TABLE "BlogPost" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "date" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "tags" TEXT[],
     "userId" TEXT NOT NULL,

@@ -24,6 +24,7 @@ model BlogPost {
   id          String   @id
   title       String
   date        String
+  image       String
   description String
   tags        String[]
   user        User     @relation(fields: [userId], references: [id])

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { use, useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userDetails } from "../../../../../packages/store/atoms/userDetails";
 
 const page = ({ params }: { params: { userId: string } }) => {
   const [message, setMessage] = useState<string>("");
@@ -9,6 +11,7 @@ const page = ({ params }: { params: { userId: string } }) => {
     { message: string; senderId: string; timestamp: string }[]
   >([]);
   const messagesContainerRef = useRef(null);
+  const userState = useRecoilValue(userDetails);
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
@@ -30,8 +33,8 @@ const page = ({ params }: { params: { userId: string } }) => {
         JSON.stringify({
           type: "join",
           payload: {
-            roomId: 1,
-            senderId: params.userId,
+            roomId: 2,
+            senderId: userState.id,
           },
         })
       );
@@ -56,7 +59,7 @@ const page = ({ params }: { params: { userId: string } }) => {
           type: "message",
           payload: {
             message: message,
-            senderId: params.userId,
+            senderId: userState.id,
             timestamp: formattedTime,
           },
         })
@@ -81,15 +84,15 @@ const page = ({ params }: { params: { userId: string } }) => {
 
   return (
     <>
-      <div className="flex flex-col border-r justify-center items-center h-screen w-1/3 bg-black overflow-x-hidden ml-3">
+      <div className="flex flex-col justify-center items-center h-screen w-1/3 overflow-x-hidden">
         <div
-          className="flex flex-col justify-end p-2 h-screen w-full bg-black text-black"
+          className="flex flex-col justify-end p-2 h-screen w-full bg-gray-900 text-black"
           ref={messagesContainerRef}
         >
           {server.map((messages, index) => (
             <div
               className={`chat space-y-2 ${
-                messages.senderId === params.userId
+                messages.senderId === userState.id
                   ? "chat-end justify-end items-end"
                   : "chat-start justify-start items-start"
               }`}
@@ -97,9 +100,9 @@ const page = ({ params }: { params: { userId: string } }) => {
             >
               <div
                 className={`chat-bubble rounded-lg ${
-                  messages.senderId === params.userId
+                  messages.senderId === userState.id
                     ? "bg-slate-800 text-white self"
-                    : "bg-gray-100 text-black other"
+                    : "bg-gray-200 text-black other"
                 }`}
                 style={{ wordWrap: "break-word" }}
               >

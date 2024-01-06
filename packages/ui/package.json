@@ -4,9 +4,6 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./CreateUser": "./src/CreateUser.tsx",
-    "./BlogPost": "./src/BlogPost.tsx",
-    "./CreateBlogPost": "./src/CreateBlogPost.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -29,9 +26,11 @@
     "@apollo/client": "^3.8.8",
     "@apollo/experimental-nextjs-app-support": "^0.5.2",
     "@next-tools/dynamic": "^0.0.11",
+    "atoms": "^0.2.0",
     "gql": "*",
     "graphql": "^16.8.1",
     "lib": "*",
-    "next": "^14.0.4"
+    "next": "^14.0.4",
+    "recoil": "^0.7.7"
   }
 }

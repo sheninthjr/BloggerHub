@@ -770,6 +770,7 @@
     "@apollo/client" "^3.8.8"
     "@apollo/experimental-nextjs-app-support" "^0.5.2"
     "@next-tools/dynamic" "^0.0.11"
+    atoms "^0.2.0"
     gql "*"
     graphql "^16.8.1"
     lib "*"
@@ -1476,6 +1477,11 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
+
+atoms@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/atoms/-/atoms-0.2.0.tgz"
+  integrity sha512-HX/dGnzVkZAV1KnXr5tHwY32rFgrQEcx3gt2N1kCrqdBLJnZxiBSDw+G3eZ+elU6h1I2EY2C0zozWZ9lIcRP1w==
 
 autoprefixer@^10.0.1:
   version "10.4.16"
@@ -5751,6 +5757,7 @@ wcwidth@^1.0.1:
   dependencies:
     "@apollo/client" "^3.8.8"
     "@apollo/experimental-nextjs-app-support" "^0.5.2"
+    gql "*"
     graphql "^16.8.1"
     next "14.0.4"
     next-auth "^4.24.5"

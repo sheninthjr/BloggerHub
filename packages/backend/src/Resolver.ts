@@ -129,12 +129,13 @@ const resolvers = {
       }
     },
     CreateBlogPost: async (_, { input }) => {
-      const { title, description, tags, userId } = input;
+      const { title, description, image, tags, userId } = input;
       const newBlogPost = await prisma.blogPost.create({
         data: {
           id: randomUUID(),
           title,
           date: formatDate(),
+          image,
           description,
           tags: {
             set: tags,
@@ -173,7 +174,7 @@ const resolvers = {
           sendFriendReq: true,
         },
       }),
-      
+
     blogPost: () => prisma.blogPost.findMany(),
   },
 };

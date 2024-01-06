@@ -1,4 +1,3 @@
-
 import LoginSession from "./LoginSession";
 const SideBar = ({ children }: any) => {
   return (
@@ -29,7 +28,7 @@ const SideBar = ({ children }: any) => {
             </div>
           </div>
         </div>
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto pt-16">
           <div className="flex justify-center">{children}</div>
         </main>
       </div>
