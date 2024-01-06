@@ -1,6 +1,6 @@
 type User {
   id: ID
-  email: String!
+  email: String
   name: String!
   image: String!
   blogPost: [BlogPost!]
@@ -11,7 +11,8 @@ type User {
 
 type Query {
   getAllUser: [User]
-  getUser(id: ID!): [User]
+  getUser(id: ID): [User]
+  getUsingEmail(email: String): [User]
   blogPost: [BlogPost]
 }
 

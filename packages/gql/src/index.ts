@@ -11,6 +11,16 @@ export const USER_DETAIL = gql`
   }
 `;
 
+export const UserEmailQuery = gql`
+query GetUsingEmail($email: String) {
+  getUsingEmail(email: $email) {
+    id
+    email
+    name
+    image
+  }
+}`
+
 export const UserIdDetails = gql`
 query GetUser($getUserId: ID!) {
   getUser(id: $getUserId) {
