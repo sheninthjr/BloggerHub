@@ -16,11 +16,11 @@ const page = () => {
   const users = data.getAllUser;
   return (
     <>
-      <div className="flex flex-col space-y-3">
+      <div className="flex flex-col space-y-3 pt-16">
         {users.map((user: any) =>
           userState.id === user.id ? null : (
             <div key={user.id} className="bg-black">
-              <div className="card w-80 flex justify-center items-start p-6 h-20 bg-base-100 shadow-xl border border-slate-400">
+              <div className="card w-96 flex justify-center items-center p-6 h-20 bg-base-100 shadow-xl border border-slate-400">
                 <div className="flex justify-between items-center w-full">
                   <div className="flex justify-center items-center space-x-2">
                     <div className="avatar w-10 h-10">

@@ -8,9 +8,11 @@ import {
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
+const BACKEND = process.env.NEXT_PUBLIC_BACKEND || "" 
+
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "http://localhost:4000",
+    uri: BACKEND,
     fetchOptions: { cache: "no-store" },
 });
 

@@ -28,7 +28,7 @@ const SideBar = ({ children }: any) => {
             </div>
           </div>
         </div>
-        <main className="flex-1 overflow-y-auto pt-16">
+        <main className="flex-1 overflow-y-auto">
           <div className="flex justify-center">{children}</div>
         </main>
       </div>

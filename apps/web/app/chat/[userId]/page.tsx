@@ -12,9 +12,10 @@ const page = ({ params }: { params: { userId: string } }) => {
   >([]);
   const messagesContainerRef = useRef(null);
   const userState = useRecoilValue(userDetails);
+  const url = process.env.NEXT_PUBLIC_CHAT || "";
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket(url);
     ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type === "message") {
@@ -84,7 +85,7 @@ const page = ({ params }: { params: { userId: string } }) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center h-screen w-1/3 overflow-x-hidden">
+      <div className="flex flex-col justify-center items-center h-screen w-1/3 overflow-x-hidden p-0">
         <div
           className="flex flex-col justify-end p-2 h-screen w-full bg-gray-900 text-black"
           ref={messagesContainerRef}
