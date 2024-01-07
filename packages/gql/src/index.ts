@@ -7,6 +7,8 @@ export const USER_DETAIL = gql`
       email
       name
       image
+      sendFriendReq
+      friends
     }
   }
 `;
@@ -56,6 +58,14 @@ export const FriendAcc = gql`
   }
 `;
 
+export const friendsRequest = gql`
+query GetUser($getUserId: ID) {
+  getUser(id: $getUserId) {
+    sendFriendReq
+    friends
+  }
+}
+`
 export const GET_BLOG_POST = gql`
   query {
     blogPost {

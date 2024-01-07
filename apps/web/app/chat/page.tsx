@@ -38,9 +38,6 @@ const page = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="pl-4 bg-white rounded-lg text-black w-20">
-                    <button>Chat</button>
-                  </div>
                 </div>
               </div>
             </div>
