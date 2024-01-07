@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { FriendReq, USER_DETAIL, friendsRequest } from "gql";
 import { useRecoilValue } from "recoil";
 import { userDetails } from "../../../packages/store/atoms/userDetails";
+import Skeleton from "./Skeleton";
 
 const UserCard = () => {
   const [sendFriendRequest, { loading: loadingReq }] = useMutation(FriendReq);
@@ -13,11 +14,10 @@ const UserCard = () => {
       getUserId: userState.id,
     },
   });
-  
   const checkUserFriendlist = userData?.getUser[0].sendFriendReq;
 
   const { loading, error, data } = useQuery(USER_DETAIL);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <>Loading...</>;
 
   const users = data.getAllUser;
 
@@ -32,9 +32,8 @@ const UserCard = () => {
     } catch (error) {
       console.error(error);
     }
-
-    alert(userId);
   }
+
   return (
     <>
       <div className="flex flex-col space-y-3">
@@ -57,15 +56,14 @@ const UserCard = () => {
                   </div>
                   <div className="pl-2 pr-2 bg-white rounded-lg text-black">
                     <button onClick={() => handleFriendShip(user.id)}>
-                      {checkUserFriendlist &&
-                      checkUserFriendlist.includes(user.id)
+                      {checkUserFriendlist && checkUserFriendlist.includes(user.id)
                         ? "Requested"
                         : "Follow"}
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
+            </div>  
           )
         )}
       </div>
@@ -74,3 +72,4 @@ const UserCard = () => {
 };
 
 export default UserCard;
+
