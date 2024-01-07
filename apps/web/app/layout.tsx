@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   description: "Created by Sheninth Jr",
 };
 
-
 export default async function RootLayout({
   children,
 }: {
@@ -31,9 +30,7 @@ export default async function RootLayout({
                 <NavBar />
               </div>
               <Init />
-              <SideBar>
-                {children}
-              </SideBar>
+              <SideBar>{children}</SideBar>
             </ApolloWrapper>
           </NextAuthProvider>
         </RecoidContextProvider>

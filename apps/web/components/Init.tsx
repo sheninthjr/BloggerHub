@@ -41,11 +41,6 @@ export default function Init() {
           setUserId(result.data.CreateUser.id);
         } else if (userDetail && userDetail.getUsingEmail && userDetail.getUsingEmail.length > 0) {
           setUserId(userDetail.getUsingEmail[0].id);
-          setUserDetail({
-            id: userDetail.getUsingEmail[0].id,
-            name: userDetail.getUsingEmail[0].name,
-            image: userDetail.getUsingEmail[0].image,
-          });
         }
       } catch (error) {
         console.error(error);
