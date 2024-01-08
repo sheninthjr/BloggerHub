@@ -85,7 +85,7 @@ const page = ({ params }: { params: { userId: string } }) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center h-screen w-1/3 overflow-x-hidden p-0">
+      <div className="flex flex-col justify-center items-center h-screen w-1/2 overflow-x-hidden p-0">
         <div
           className="flex flex-col justify-end p-2 h-screen w-full bg-gray-900 text-black"
           ref={messagesContainerRef}
