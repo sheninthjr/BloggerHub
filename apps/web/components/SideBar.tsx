@@ -3,7 +3,7 @@ const SideBar = ({ children }: any) => {
   return (
     <>
       <div className="flex flex-col md:flex-row h-screen">
-        <div className="flex flex-col md:space-y-10 md:items-center h-screen ml-96 bg-gray-900 text-black w-1/6 p-4 pt-16">
+        <div className="flex flex-col md:space-y-10 md:items-center h-screen bg-gray-900 text-black w-1/6 p-4 pt-16">
           <div className="font-bold pt-10 text-white text-lg hover:scale-105 hover:text-3xl transition duration-300">
             <a href="/">Home</a>
           </div>
