@@ -2,6 +2,8 @@
 
 BloggerHub is a feature-rich web application that empowers users to connect, share content, and engage in real-time conversations. Built on a robust tech stack including Next.js, GraphQL, WebSocket, Tailwind CSS, and Recoil, BloggerHub offers a seamless and modern experience for bloggers and content enthusiasts.
 
+![Alt text](/sample.png)
+
 ## Features
 ### Real-Time Chatting
 Connect with your friends and followers in real-time through our intuitive chat feature. Stay engaged and build a community around your content.
