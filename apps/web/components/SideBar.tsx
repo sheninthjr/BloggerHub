@@ -1,13 +1,5 @@
-"use client";
-
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import LoginSession from "./LoginSession";
-const SideBar = ({ children }: any) => {  
-  const { data: session } = useSession();
-  if (!session?.user?.email) {
-    redirect("/api/auth/signin");
-  }
+const SideBar = ({ children }: any) => {
   return (
     <>
       <div className="flex flex-col md:flex-row h-screen ml-96">
