@@ -62,7 +62,7 @@ const page = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen w-full">
         <div className="card w-96 shadow-xl bg-gray-900">
           <div className="card-body">
             <div>
