@@ -1,4 +1,3 @@
-
 import BlogPost from "@/components/BlogPost";
 import UserCard from "@/components/UserCard";
 
@@ -10,11 +9,12 @@ export default function Home() {
           <div className="flex-1 rounded-2xl mr-4">
             <BlogPost />
           </div>
-          <div
-            className="flex-1 pr-10 space-y-5 bg-gray-900 pl-10 rounded-2xl h-fit pb-10"
-            style={{ marginLeft: 0 }}
-          >
-            <div className="flex font-extrabold mt-2">Who is to follow you</div>
+          <div className="pr-10 space-y-5 bg-gray-900 pl-10 rounded-2xl h-fit pb-10">
+            <div className="flex justify-center items-center space-x-2">
+              <div className="font-extrabold text-white mt-2">
+                People You May Know
+              </div>
+            </div>
             <div style={{ marginLeft: 4 }}>
               <UserCard />
             </div>

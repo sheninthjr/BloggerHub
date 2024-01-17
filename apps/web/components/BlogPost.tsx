@@ -43,14 +43,10 @@ const BlogPost = () => {
 
   return (
     <>
-      <div className="bg-gray-900 flex justify-center pt-8 rounded-2xl pl-10 pr-10 pb-10  ">
-        <div
-          className={`flex w-1/2 flex-col justify-center items-center space-y-4${
-            createMode ? " filter blur-lg" : ""
-          }`}
-        >
+       <div className="bg-gray-900 flex justify-center pt-8 rounded-2xl pl-10 pr-10 pb-10">
+        <div className="flex flex-wrap justify-center items-center space-x-4">
           {reversedBlogPosts.map((blogPost, index: number) => (
-            <div key={index} className="card w-96 bg-black border shadow-xl">
+            <div key={index} className="card w-96 bg-black border shadow-xl mb-8">
               <div className="card-body">
                 <h2 className="card-title">
                   <div className="avatar">

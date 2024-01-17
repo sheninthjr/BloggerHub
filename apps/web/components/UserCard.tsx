@@ -4,7 +4,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { FriendReq, USER_DETAIL, friendsRequest } from "gql";
 import { useRecoilValue } from "recoil";
 import { userDetails } from "../../../packages/store/atoms/userDetails";
-import Skeleton from "./Skeleton";
 
 const UserCard = () => {
   const [sendFriendRequest, { loading: loadingReq }] = useMutation(FriendReq);
@@ -36,7 +35,7 @@ const UserCard = () => {
 
   return (
     <>
-      <div className="flex flex-col space-y-3">
+      <div className="hidden md:flex flex-col justify-center items-center space-y-3">
         {users.map((user: any) =>
           userState.id === user.id ? null : (
             <div key={user.id} className="bg-black">
