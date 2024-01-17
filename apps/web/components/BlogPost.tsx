@@ -75,8 +75,7 @@ const BlogPost = () => {
                     {expandedPosts.includes(index)
                       ? blogPost.description
                       : renderLimitedDescription(blogPost.description)}
-                  </p>
-                </div>
+
                 {blogPost.description.length > 200 && (
                   <button
                     className="text-slate-400 hover:text-white"
@@ -85,6 +84,8 @@ const BlogPost = () => {
                     {expandedPosts.includes(index) ? 'See Less' : 'See More'}
                   </button>
                 )}
+                  </p>
+                </div>
                 <div className="card-actions justify-end">
                   {Array.isArray(blogPost.tags) &&
                     blogPost.tags?.map((tag: any, tagIndex: number) => (
