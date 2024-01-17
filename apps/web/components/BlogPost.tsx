@@ -4,15 +4,20 @@ import { useQuery } from "@apollo/client";
 import { blogPostType } from "lib";
 import { GET_BLOG_POST } from "gql";
 
-import { useRecoilValue } from "recoil";
-import { userDetails } from "../../../packages/store/atoms/userDetails";
-
 const BlogPost = () => {
   const { loading, error, data } = useQuery(GET_BLOG_POST);
-  const [createMode, setCreateMode] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const userState = useRecoilValue(userDetails);
+  const [expandedPosts, setExpandedPosts] = useState<number[]>([]);
 
+  const handleSeeMoreClick = (index: number) => {
+    setExpandedPosts((prevExpandedPosts) => {
+      if (prevExpandedPosts.includes(index)) {
+        return prevExpandedPosts.filter((item) => item !== index);
+      } else {
+        return [...prevExpandedPosts, index];
+      }
+    });
+  };
   useEffect(() => {
     if (loading) {
       setIsClient(true);
@@ -46,7 +51,7 @@ const BlogPost = () => {
        <div className="bg-gray-900 flex justify-center pt-8 rounded-2xl pl-10 pr-10 pb-10">
         <div className="flex flex-wrap justify-center items-center space-x-4">
           {reversedBlogPosts.map((blogPost, index: number) => (
-            <div key={index} className="card w-96 bg-black border shadow-xl mb-8">
+            <div key={index} className="card w-96 h-96 bg-black border shadow-xl mb-8">
               <div className="card-body">
                 <h2 className="card-title">
                   <div className="avatar">
@@ -61,9 +66,25 @@ const BlogPost = () => {
                     </div>
                   </div>
                 </h2>
-                <p className="text-slate-200 font-medium">
-                  {blogPost.description}
-                </p>
+                <div className="description-container">
+                  <p
+                    className={`text-slate-200 font-medium ${
+                      expandedPosts.includes(index) ? 'overflow-y-auto' : 'overflow-hidden'
+                    }`}
+                  >
+                    {expandedPosts.includes(index)
+                      ? blogPost.description
+                      : renderLimitedDescription(blogPost.description)}
+                  </p>
+                </div>
+                {blogPost.description.length > 200 && (
+                  <button
+                    className="text-slate-400 hover:text-white"
+                    onClick={() => handleSeeMoreClick(index)}
+                  >
+                    {expandedPosts.includes(index) ? 'See Less' : 'See More'}
+                  </button>
+                )}
                 <div className="card-actions justify-end">
                   {Array.isArray(blogPost.tags) &&
                     blogPost.tags?.map((tag: any, tagIndex: number) => (
@@ -82,6 +103,15 @@ const BlogPost = () => {
       </div>
     </>
   );
+  function renderLimitedDescription(description: string) {
+    const truncatedDescription =
+      description.length > 200 ? `${description.slice(0, 200)}...` : description;
+    const descriptionWithLinks = truncatedDescription.replace(
+      /https?:\/\/[^\s]+/g,
+      (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: blue;">${url}</a>`
+    );
+    return <span dangerouslySetInnerHTML={{ __html: descriptionWithLinks }} />;
+  }
 };
 
 export default BlogPost;
