@@ -83,3 +83,7 @@ yarn build
 ```sh
 yarn start
 ```
+
+## Open Source 
+
+Anyone can contribute to it.
